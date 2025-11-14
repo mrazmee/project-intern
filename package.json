@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
+    "worker": "node src/worker/jobWorker.js",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
@@ -13,10 +14,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/genai": "^1.29.1",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.19.0",
+    "canvas": "^3.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "pdf-parse": "^1.1.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",

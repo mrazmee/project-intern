@@ -13,7 +13,6 @@ async function handleGetResult(req, res) {
     const { job, evaluation } = jobWithEval;
 
     if (job.status === "COMPLETED" && evaluation) {
-      // Hari 1: belum ada evaluation, ini nanti diisi Hari 2/3
       return res.json({
         id: job.id,
         status: job.status.toLowerCase(),
@@ -27,12 +26,13 @@ async function handleGetResult(req, res) {
       });
     }
 
+    // QUEUED / PROCESSING / FAILED
     return res.json({
       id: job.id,
       status: job.status.toLowerCase(),
     });
   } catch (err) {
-    console.error(err);
+    console.error("RESULT ERROR:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 }
