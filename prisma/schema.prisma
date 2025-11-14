@@ -1,0 +1,55 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model File {
+  id         Int       @id @default(autoincrement())
+  type       String    // "CV" atau "PROJECT_REPORT"
+  path       String
+  uploadedAt DateTime  @default(now())
+
+  cvJobs     Job[]     @relation("CvFile")
+  reportJobs Job[]     @relation("ReportFile")
+}
+
+model Job {
+  id            Int        @id @default(autoincrement())
+  jobTitle      String
+
+  cvFileId      Int
+  cvFile        File       @relation("CvFile", fields: [cvFileId], references: [id])
+
+  reportFileId  Int
+  reportFile    File       @relation("ReportFile", fields: [reportFileId], references: [id])
+
+  status        String     @default("QUEUED")  // "QUEUED" | "PROCESSING" | "COMPLETED" | "FAILED"
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  evaluation    Evaluation?
+}
+
+model Evaluation {
+  id               Int      @id @default(autoincrement())
+  jobId            Int      @unique
+  job              Job      @relation(fields: [jobId], references: [id])
+
+  cvMatchRate      Float
+  cvFeedback       String
+
+  projectScore     Float
+  projectFeedback  String
+
+  overallSummary   String
+
+  // Simpan JSON sebagai string (opsional)
+  rawCvScores      String?  // JSON string
+  rawProjectScores String?  // JSON string
+
+  createdAt        DateTime @default(now())
+}
