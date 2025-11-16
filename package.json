@@ -7,6 +7,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "worker": "node src/worker/jobWorker.js",
+    "ingest:rubrics": "node src/scripts/ingestRubrics.js",
+    "test:embed-dim": "node src/scripts/testEmbeddingDim.js",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
@@ -17,6 +19,7 @@
     "@google/genai": "^1.29.1",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.19.0",
+    "@qdrant/js-client-rest": "^1.15.1",
     "canvas": "^3.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",

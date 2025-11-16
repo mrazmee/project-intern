@@ -1,0 +1,12 @@
+CV rubric 1: The CV should clearly communicate the candidate’s targeted role and summarize their strengths in one concise paragraph.
+CV rubric 2: Work experience or internships should be listed with clear responsibilities and measurable outcomes.
+CV rubric 3: Technical skills should be grouped logically and match the keywords from the job description.
+CV rubric 4: Programming languages should include the candidate’s proficiency level or recent usage context.
+CV rubric 5: Backend-related skills such as REST APIs, databases, authentication, and cloud basics should be emphasized.
+CV rubric 6: Experience with version control, collaboration tools, or team-based projects should be included.
+CV rubric 7: Education section should be clear with GPA, degree, and academic achievements if relevant.
+CV rubric 8: Projects listed should include a very short summary of tech stack and impact.
+CV rubric 9: The CV layout should be clean, consistent, and easy to scan by recruiters.
+CV rubric 10: Keywords relevant to backend development (API, DB, Go, Node.js, SQL, Cloud) should appear naturally.
+CV rubric 11: Soft skills such as communication, teamwork, and problem-solving should be mentioned if applicable.
+CV rubric 12: The CV should avoid unnecessary personal information and keep length within one page if possible.

@@ -1,0 +1,12 @@
+Project rubric 1: The report should clearly explain the problem statement and motivation behind the project.
+Project rubric 2: The tech stack should be described with reasons for choosing each component.
+Project rubric 3: The system architecture should be summarized either textually or with a diagram if available.
+Project rubric 4: API or backend workflow design should be documented clearly and consistently.
+Project rubric 5: Database schema should be explained briefly alongside key relationships.
+Project rubric 6: The project should mention how errors, logging, or validation were handled.
+Project rubric 7: Any authentication or authorization logic should be clearly described.
+Project rubric 8: The report should mention how testing was performed (unit, integration, or manual tests).
+Project rubric 9: Deployment steps or hosting environment should be described.
+Project rubric 10: Performance considerations such as caching, concurrency, or optimization should be mentioned if relevant.
+Project rubric 11: The report should include a reflection section on challenges and lessons learned.
+Project rubric 12: The writing style should be clear, concise, and technically accurate without unnecessary filler.

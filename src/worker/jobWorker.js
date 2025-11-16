@@ -8,8 +8,10 @@ const pdfService = require("../services/pdfService");
 const llmService = require("../services/llmService");
 
 async function processOneJob() {
+  // cari job QUEUED berikutnya
   const job = await jobService.getNextQueuedJob();
   if (!job) {
+    // tidak ada job, worker idle
     return;
   }
 
@@ -18,11 +20,11 @@ async function processOneJob() {
   try {
     await jobService.markJobProcessing(job.id);
 
-    // 1. ambil file CV & report
+    // 1. ambil file CV & report dari DB
     const cvFile = await fileService.getFileById(job.cvFileId);
     const reportFile = await fileService.getFileById(job.reportFileId);
 
-    // 2. parse PDF -> dapat teks
+    // 2. parse PDF -> ambil teks
     const cvParsed = await pdfService.parsePdf(cvFile.path);
     const reportParsed = await pdfService.parsePdf(reportFile.path);
 
@@ -32,11 +34,11 @@ async function processOneJob() {
     console.log("CV text length:", cvText.length);
     console.log("Report text length:", reportText.length);
 
-    // 3. panggil LLM (Gemini) untuk evaluasi
+    // 3. panggil LLM (Gemini) untuk evaluasi (dengan RAG rubrics)
     const aiResult = await llmService.evaluateCandidate({
-      jobTitle: job.jobTitle,
-      cvText,
-      reportText,
+      jobTitle: job.title || job.position || job.role || null,
+      cvText,       // ⬅️ kirim string langsung, bukan cvText.text
+      reportText,   // ⬅️ sama
     });
 
     console.log(
@@ -44,7 +46,7 @@ async function processOneJob() {
       JSON.stringify(aiResult, null, 2)
     );
 
-    // 4. simpan ke tabel Evaluation
+    // 4. simpan hasil ke tabel Evaluation
     await evaluationService.createEvaluation(job.id, {
       cvMatchRate: aiResult.cvMatchRate,
       cvFeedback: aiResult.cvFeedback,
@@ -66,8 +68,12 @@ async function processOneJob() {
 }
 
 async function startWorker() {
-  console.log("GEMINI_KEY_PREFIX:", (process.env.GEMINI_API_KEY || "").slice(0, 8));
+  console.log(
+    "GEMINI_KEY_PREFIX:",
+    (process.env.GEMINI_API_KEY || "").slice(0, 8)
+  );
   console.log("Job worker started. Polling for jobs every 5 seconds...");
+
   setInterval(() => {
     processOneJob().catch((err) => {
       console.error("Worker error:", err);
