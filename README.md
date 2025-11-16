@@ -86,10 +86,13 @@ DATABASE_URL=file:./dev.db
 ```
 src/
  ├── api/
- │    ├── uploadRoutes.js
- │    └── evaluateRoutes.js
+ │    ├── uploadController.js
+ │    └── evaluateController.js
+ │    └── resultController.js
  ├── worker/
  │    └── jobWorker.js
+ ├── config/
+ │    └── env.js
  ├── services/
  │    ├── llmService.js
  │    ├── ragService.js
