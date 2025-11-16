@@ -30,7 +30,9 @@ const storage = multer.diskStorage({
     const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
 
     // buang karakter aneh di nama file (emoji, dll)
-    const original = file.originalname.normalize("NFKD").replace(/[^\w.\-]/g, "_");
+    const original = file.originalname
+      .normalize("NFKD")
+      .replace(/[^\w.\-]/g, "_");
 
     cb(null, unique + "-" + original);
   },
@@ -51,5 +53,24 @@ app.post(
 
 app.post("/evaluate", evaluateController.handleEvaluate);
 app.get("/result/:id", resultController.handleGetResult);
+
+// === 404 handler (route tidak ditemukan) ===
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+// === Global error handler (format error konsisten) ===
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  const status = err.status || 500;
+  res.status(status).json({
+    success: false,
+    message: err.message || "Internal server error",
+  });
+});
 
 module.exports = app;

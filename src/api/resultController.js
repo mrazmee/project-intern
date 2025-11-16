@@ -1,19 +1,24 @@
 // src/api/resultController.js
 const jobService = require("../services/jobService");
 
-async function handleGetResult(req, res) {
+async function handleGetResult(req, res, next) {
   try {
     const jobId = req.params.id;
     const jobWithEval = await jobService.getJobWithEvaluation(jobId);
 
     if (!jobWithEval) {
-      return res.status(404).json({ message: "Job not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Job not found",
+      });
     }
 
     const { job, evaluation } = jobWithEval;
 
+    // Kalau job sudah selesai & ada evaluation
     if (job.status === "COMPLETED" && evaluation) {
       return res.json({
+        success: true,
         id: job.id,
         status: job.status.toLowerCase(),
         result: {
@@ -26,14 +31,15 @@ async function handleGetResult(req, res) {
       });
     }
 
-    // QUEUED / PROCESSING / FAILED
+    // QUEUED / PROCESSING / FAILED (belum ada evaluation final)
     return res.json({
+      success: true,
       id: job.id,
       status: job.status.toLowerCase(),
     });
   } catch (err) {
     console.error("RESULT ERROR:", err);
-    res.status(500).json({ message: "Internal server error" });
+    return next(err); // lempar ke global error handler
   }
 }
 
